@@ -1,75 +1,79 @@
+# docker-compose.yml
+# This file is a YAML file that defines the configuration of the Docker containers that will be used in this lab.
+# creedits: Lidor Keren Yehsuah
+
 version: "3"
 
 services:
     guardian:
-        image: handsonsecurity/seed-ubuntu:large
-        container_name: network-guardian
-        tty: true
-        cap_add:
+        image: handsonsecurity/seed-ubuntu:large # Specifies the Docker image to be used for the container.
+        container_name: network-guardian # Assigns a custom name to the container.
+        tty: true # Allocates a pseudo-TTY, which allows you to interact with the container's terminal.
+        cap_add: # Grants additional Linux capabilities to the container.
                 - ALL
-        privileged: true
-        volumes:
+        privileged: true # Runs the container in privileged mode, giving it more access to the host system's resources.
+        volumes: # Mounts a directory from the host into the container.
                 - ./volumes:/volumes
-        network_mode: host
+        network_mode: host # Sets the network mode to "host," which allows the container to use the host's networking stack.
 
-    sender:
-        image: handsonsecurity/seed-ubuntu:large
-        container_name: sender-10.9.0.2
-        tty: true
-        cap_add:
+    Machine_1:
+        image: handsonsecurity/seed-ubuntu:large # Specifies the Docker image to be used for the container.
+        container_name: IP-10.9.0.2 # Assigns a custom name to the container.
+        tty: true # Allocates a pseudo-TTY, which allows you to interact with the container's terminal.
+        cap_add: # Grants additional Linux capabilities to the container.
                 - ALL
         networks:
             net-10.9.0.0:
                 ipv4_address: 10.9.0.2
-        volumes:
+        volumes: # Mounts a directory from the host into the container.
                 - ./volumes:/volumes
         command: bash -c "
                       /etc/init.d/openbsd-inetd start  &&
                       tail -f /dev/null
                  "
 
-    proxyA:
-        image: handsonsecurity/seed-ubuntu:large
-        container_name: proxyA-10.9.0.3
-        tty: true
-        cap_add:
+    Machine_2:
+        image: handsonsecurity/seed-ubuntu:large #S pecifies the Docker image to be used for the container.
+        container_name: IP-10.9.0.3 # Assigns a custom name to the container.
+        tty: true # Allocates a pseudo-TTY, which allows you to interact with the container's terminal.
+        cap_add: # Grants additional Linux capabilities to the container.
                 - ALL
         networks:
             net-10.9.0.0:
                 ipv4_address: 10.9.0.3
-        volumes:
+        volumes: # Mounts a directory from the host into the container.
                 - ./volumes:/volumes
         command: bash -c "
                       /etc/init.d/openbsd-inetd start  &&
                       tail -f /dev/null
                  "
 
-    proxyB:
-        image: handsonsecurity/seed-ubuntu:large
-        container_name: proxyB-10.9.0.4
-        tty: true
-        cap_add:
+    Machine_3:
+        image: handsonsecurity/seed-ubuntu:large # Specifies the Docker image to be used for the container.
+        container_name: IP-10.9.0.4 # Assigns a custom name to the container.
+        tty: true # Allocates a pseudo-TTY, which allows you to interact with the container's terminal.
+        cap_add: # Grants additional Linux capabilities to the container.
                 - ALL
         networks:
             net-10.9.0.0:
                 ipv4_address: 10.9.0.4
-        volumes:
+        volumes: # Mounts a directory from the host into the container.
                 - ./volumes:/volumes
         command: bash -c "
                       /etc/init.d/openbsd-inetd start  &&
                       tail -f /dev/null
                  "
 
-    endUser:
-        image: handsonsecurity/seed-ubuntu:large
-        container_name: endUser-10.9.0.5
-        tty: true
-        cap_add:
+    Machine_4:
+        image: handsonsecurity/seed-ubuntu:large #S pecifies the Docker image to be used for the container.
+        container_name: IP-10.9.0.5 # Assigns a custom name to the container.
+        tty: true # Allocates a pseudo-TTY, which allows you to interact with the container's terminal.
+        cap_add: # Grants additional Linux capabilities to the container.
                 - ALL
         networks:
             net-10.9.0.0:
                 ipv4_address: 10.9.0.5
-        volumes:
+        volumes: # Mounts a directory from the host into the container.
                 - ./volumes:/volumes
         command: bash -c "
                       /etc/init.d/openbsd-inetd start  &&
@@ -78,7 +82,7 @@ services:
 
 networks:
     net-10.9.0.0:
-        name: net-10.9.0.0
-        ipam:
-            config:
+        name: net-10.9.0.0 # Assigns a custom name to the network.
+        ipam: # Specifies IP address management (IPAM) configuration for the network.
+            config: # defines the IP subnet that containers on this network will use.
                 - subnet: 10.9.0.0/24
